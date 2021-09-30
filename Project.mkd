@@ -1,0 +1,74 @@
+## TodoItem
+### Caractéristiques
+- keyID         
+- *title*         
+- description   
+- notes  
+- creationDate = Date       
+- dueDate = Date
+- priority      
+- project 
+
+### Methodes:   
+- updateItem(*title*, description, notes, dueDate, priority, project): set the given parameter.
+
+- getBasics() : return an object with the "caractéristiques" of the TodoItem (Pour utiliser pour la suavegarde)
+
+## TodoList
+### Caractéristiques:   
+- maxKey = integer. Next key to add to a new TodoItem
+- todoItemList = [TodoItem]
+- priorityList = [string] ==> Reprend les différents niveaux de priorités disponibles
+
+### Methods
+- addTodoItem(TodoItem): set TodoItem.key if it's still undefined (=ne vient pas de localStorage) and maxKey++. Add the TodoItem object to todoItemList and return TodoItem.key.
+- createTodoItem(BasicDatasObject): make a new TodoItem object from the BasicDatasObject and use it with addTodoItem(). 
+- populateTodoItemList(loadedDatas): Call createTodoItem() for each item coming from loadDatas() to populate todoItemList
+- removeItem(key): remove the TodoItem object with the given key from todoItemList
+- removeAllItem(): remove all item from the todoItemList
+- getProjectsList(): return a list of all the different project of the object in the todoItemList
+- getTodoItem(key): return the TodoItem from todoItemList with the given key (à utiliser pour mettre à jour les taches todo directement)
+- updateTodoItem(key,*title*, description, notes, dueDate, priority, project): get the TodoItem with the given key using getTodoItem(key). Call updateItem(**) on that item to update his datas.
+- getTodoItemTitleList(project): return a list of all the TodoItem.title in the todoItemList with the given TodoItem.project (don't forget the case where we want all the title without looking at the project - with an added paramater to the function i.e.) or for the TodoItem with no defined project)
+- sortByPriority(): sort the todoItemList by TodoItem.priority
+- sortByDate(): sort the todoItemList by TodoItem.creationDate
+- getItemsProject(project): return list of keys of the todoItemList's object with the given project
+- getMoreTodoItems([keys]): return a list of the TodoItem's object in todoItemList with the keys in the given key's array
+- setPriorityList([string]): set a new priorityList.
+
+## Datas
+Helpers function around the managment of the datas with localStorage
+
+- loadDatas(): Load all datas with key begining with "todoItem-" from localStorage. return a list.
+
+- saveItem(basicDatas): save basicDatas in localStorage at the key "todoItem-{basicDatas.id}"
+
+- removeItem(key): remove the basicData with the key "todoItem-{key}"
+
+## BasicsDataObject
+### Caractéristiques
+
+- keyID         
+- *title*         
+- description   
+- notes  
+- creationDate = text (format date)       
+- dueDate = text(format date)
+- priority = text     
+- project 
+
+## App
+Module with the helpers for the application
+
+
+- createBasicDatasObject(key, *title*, description, notes, creationDate, dueDate, priority, project): validate each datas calling the right fct and return a BasicDatasObject with no key set(=undefined).
+- isADate(text): verify the given parameter is a string with the correct format to use it with Date(). Return true or false.
+- isATitle(text): verify the given parameter is a string not too long (max 20 letters) and contain at least 1 letter. Return true or false.
+- isADescription(text): verify the given parameter is a string not too long(max 30 letters). Return true or false.
+- isANote(text):  verify the given parameter is a string not too long(max 500 letters). Return true or false.
+- isAPriority(text): verify the given parameter is a contained in TodoList.priorityList. Return true or false.
+- isAProject(text): verify the given parameter is a string not too long(max 30 letters). Return true or false.
+
+- addItemToTodoList(BasicsDataObject): add a TodoItem to TodoList with TodoList.addTodoItem(BasicDatasObject). It return a key to set to BasicDatasObject.key . Save BasicDatasObject in localStorage.
+- removeItemToTodoList(key): remove the item with the given key from TodoList with TodoList.removeItem(key). rmv the BasicDatasObject with the given key from localStorage
+- updateTodoItem(key, *title*, description, notes, dueDate, priority, project): validate each datas calling the right fct. Use TodoList.updateTodoItem(key, *title*, description, notes, dueDate, priority, project) to update the TodoItem with the given key
