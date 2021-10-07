@@ -27,4 +27,48 @@ export class TodoList {
         newItem.loadFromBasicDatasObject(basicDatasObject);
         this.addTodoItem(newItem);
     }
+
+    removeItem(key) {
+        /* Remove the TodoItem object with the given key from todoItemList */
+        const index = this.todoItemList.findIndex((el) => {
+            return (el.key == key) ? true : false;
+        });
+        this.todoItemList.splice(index, 1);
+    }
+
+    removeAllItem() {
+        /* Remove all item from the todoItemList */
+        this.todoItemList = [];
+    }
+
+    getProjectsList() {
+        /* Return a list of all the different project of the object in the todoItemList */
+        let projectList = [];
+
+        for (let i = 0; i < this.todoItemList.length; i++) {
+            let el = this.todoItemList[i];
+            let index = projectList.indexOf(el.project);
+
+            /* If the project is not already in the list, add it */
+            if (index == -1) {
+                projectList.push(el.project);
+            }
+        };
+
+        return projectList;
+    }
+
+    getTodoItem(key){
+        /* Return the TodoItem from todoItemList with the given key */
+        return this.todoItemList.find(el => {
+            return (el.key == key);
+        });
+    }
+
+    updateTodoItem(key, title, description, notes, creationDate, dueDate, priority, project) {
+        /* Replace the datas of the todoItem with the given key with the datas provided */
+        const item = this.getTodoItem(key);
+        item.updateItem(title, description, notes, creationDate, dueDate, priority, project);
+    }
+
 }
