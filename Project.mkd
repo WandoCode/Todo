@@ -12,13 +12,12 @@
 ### Methodes:   
 - updateItem(*title*, description, notes, dueDate, priority, project): set each variable of TodoItems with the corresponding given ones.
 
-- getBasics() : return an object with the "caractéristiques" of the TodoItem (Pour utiliser pour la sauvegarde). Utiliser la factory fct de BasicsDataObject si possible
+- getBasics() : return an object with the "caractéristiques" of the TodoItem (Pour utiliser pour la sauvegarde). !!!!Utiliser la factory fct de BasicsDataObject au lieu de cette fct!!!!
 
 ## TodoList
 ### Caractéristiques:   
 - maxKey = integer. Next key to add to a new TodoItem
 - todoItemList = [TodoItem]
-- priorityList = [string] ==> Reprend les différents niveaux de priorités disponibles
 
 ### Methods
 - addTodoItem(TodoItem): set TodoItem.key if it's still undefined (=ne vient pas de localStorage) and maxKey++ if it's the case. Add the TodoItem object to todoItemList. Return TodoItem.key.
@@ -33,7 +32,6 @@
 - sortByDate(): sort the todoItemList by TodoItem.creationDate
 - getItemsProject(project): return list of keys of the todoItemList's object with the given project
 - getMoreTodoItems([keys]): return a list of the TodoItem's object in todoItemList with the keys in the given key's array
-- setPriorityList([string]): set a new priorityList.
 
 ## Datas
 Helpers function around the managment of the datas with localStorage
@@ -64,7 +62,7 @@ Module with the helpers for the application
 - isATitle(text): verify the given parameter is a string not too long (max 20 letters) and contain at least 1 letter. Return true or false.
 - isADescription(text): verify the given parameter is a string not too long(max 30 letters). Return true or false.
 - isANote(text):  verify the given parameter is a string not too long(max 500 letters). Return true or false.
-- isAPriority(text): verify the given parameter is a contained in TodoList.priorityList. Return true or false.
+- isAPriority(text): verify the given parameter is a contained in priorityList (objet a faire qui reprend les niveau de priorité disponible). Return true or false.
 - isAProject(text): verify the given parameter is a string not too long(max 30 letters). Return true or false.
 - validateDatas(*title*, description, notes, creationDate, dueDate, priority, project): validate each datas by calling the right fct. Return true or false.
 
