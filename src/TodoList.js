@@ -6,26 +6,23 @@ export class TodoList {
         this.todoItemList = [];
     }
 
-    addTodoItem(todoItem) {
-        /* Add a new item to the todoItemList. Set todoItem.key if needed and increment this.maxKey
-        Return todoItem.key */
-
-        if (todoItem.key == undefined) {
-            todoItem.key = this.maxKey;
-            this.maxKey++;
-        }
-
-        this.todoItemList.push(todoItem);
-
-        return todoItem.key;
-    }
-
     createTodoItem(basicDatasObject) {
-        /* Add an item to this.todoItemList from the basicDatasObject */
+        /* Add an item to this.todoItemList from the basicDatasObject.
+        Set todoItem.key if needed and increment this.maxKey
+        Return todoItem.key */
 
         const newItem = new TodoItem();
         newItem.loadFromBasicDatasObject(basicDatasObject);
         this.addTodoItem(newItem);
+
+        if (newItem.key == undefined) {
+            newItem.key = this.maxKey;
+            this.maxKey++;
+        }
+
+        this.todoItemList.push(newItem);
+
+        return newItem.key;
     }
 
     removeItem(key) {
@@ -70,5 +67,45 @@ export class TodoList {
         const item = this.getTodoItem(key);
         item.updateItem(title, description, notes, creationDate, dueDate, priority, project);
     }
+
+    getItemsProjectList(project) {
+        /* Return a list of the TodoItem with the given project. If no project, return todoItemList.*/
+
+        /* Case with no given project */
+        if (project == undefined) return this.todoItemList;
+
+        /* Filter with the given project */
+        return this.todoItemList.filter(el => {
+            return (el.project == project);
+        });
+    }
+
+    getTitleList(project) {
+        /* Return a list of the title of the items with the given project.
+        If no project (=undefined), return the title of all the item */
+
+        const projectItemList = this.getItemsProjectList(project);
+
+        return projectItemList.map(el => {
+            return el.title;
+        });
+    }
+
+    sortByPriority() {
+        /* Sort the todoItem by priority order */
+
+        return this.todoItemList.sort((a, b) => {
+            return (a.priority - b.priority);
+        });
+    }
+
+    sortByDate() {
+        /* Sort the todoItem by date of creation */
+
+        return this.todoItemList.sort((a, b) => {
+            return (a.creationDate - b.creationDate);
+        });
+    }
+
 
 }
