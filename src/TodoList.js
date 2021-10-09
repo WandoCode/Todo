@@ -13,7 +13,6 @@ export class TodoList {
 
         const newItem = new TodoItem();
         newItem.loadFromBasicDatasObject(basicDatasObject);
-        this.addTodoItem(newItem);
 
         if (newItem.key == undefined) {
             newItem.key = this.maxKey;

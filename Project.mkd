@@ -71,8 +71,8 @@ ATTENTION: le form qui va collecter les données doit comporter la clé des él�
 
 - makeBasicDatasObjectFromForm(key, *title*, description, notes, dueDate, priority, project):
 Validate datas, return a basicDatasObject.
-- addItemToTodoList(key, *title*, description, notes, dueDate, priority, project): make a basicDatasObject with makeBasicDatasObjectFromForm. Then use createTodoItem(basicDatasObject) to add a new item to todoList. Set the key returned by createTodoItem to basicDatasObject.key. Save that basicDatasObject.
-- removeItemToTodoList(key): use removeItembyKey to remove item from localStorage, and removeItem to remove from todolist.
-- updateTodoItem(key, *title*, description, notes, dueDate, priority, project): make a basicDatasObject with makeBasicDatasObjectFromForm. Then use todolist.updateTodoItem() and saveItem(basicDatasObject)
+- addItemToTodoList(todoList key, *title*, description, notes, dueDate, priority, project): make a basicDatasObject with makeBasicDatasObjectFromForm. Then use createTodoItem(basicDatasObject) to add a new item to todoList. Set the key returned by createTodoItem to basicDatasObject.key. Save that basicDatasObject.
+- removeItemToTodoList(todoList, key): use removeItembyKey to remove item from localStorage, and removeItem to remove from todolist.
+- updateTodoItem(todoList, key, *title*, description, notes, dueDate, priority, project): make a basicDatasObject with makeBasicDatasObjectFromForm. Then use todolist.updateTodoItem() and saveItem(basicDatasObject)
 
 

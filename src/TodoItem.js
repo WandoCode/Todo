@@ -10,13 +10,12 @@ export class TodoItem {
         this.project = project;
     }
 
-    updateItem(title, description, notes, creationDate, dueDate, priority, project) {
+    updateItem(title, description, notes, dueDate, priority, project) {
         /*set each variable of TodoItems with the corresponding given ones.*/
         this.title = title;
         this.description = description;
         this.notes = notes;
-        this.creationDate = creationDate;
-        this.dueDate = dueDate;
+        this.dueDate = new Date(dueDate);
         this.priority = priority;
         this.project = project;
     }
