@@ -28,7 +28,7 @@ export class TodoItem {
         this.notes = basicDatasObject.notes;
         this.creationDate = new Date(JSON.parse(basicDatasObject.creationDate));
         this.dueDate = new Date(JSON.parse(basicDatasObject.dueDate));
-        this.priority = basicDatasObject.priority;
+        this.priority = JSON.parse(basicDatasObject.priority);
         this.project = basicDatasObject.project;
     }
 }

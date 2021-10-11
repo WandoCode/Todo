@@ -36,3 +36,21 @@ export function addButton(parentNode, nodeClass, text, callBackFct){
 
     return newButton;
 }
+
+export const createList = (listeType, parentNode, dataArray, nodeClass) => {
+    /* Add a list of type listeType (ul or ol) to parentNode, item coming from the given array */
+
+    /* Add the list to parentNode */
+    const newList = document.createElement(`${listeType}`);
+    parentNode.appendChild(newList);
+
+    if (nodeClass != undefined && nodeClass != 0) {
+        newList.classList.add(nodeClass);
+    }
+
+    /* Populate the list */
+    for (let i = 0; i < dataArray.length; i++) {
+        const item = dataArray[i];
+        addNode(newList, "LI", 'listItem', item);
+    }
+}

@@ -128,7 +128,7 @@ export const addItemToTodoList = (todoList, title, description, notes, dueDate, 
     basicObject.key = key;
 
     /* Save the item */
-    saveItem(basicObject);
+    saveItem(basicObject, todoList);
 }
 
 export const removeItemToTodoList = (todoList, key) => {
@@ -158,7 +158,7 @@ export const updateTodoItem = (todoList, key, title, description, notes, dueDate
     }
 
     todoList.updateTodoItem(key, title, description, notes, dueDate, priority, project);
-    saveItem(basicObject);
+    saveItem(basicObject, todoList);
 }
 
 export const initTodoList = () => {
@@ -169,8 +169,8 @@ export const initTodoList = () => {
     const dataList = loadDatas();
 
     /* Datas are available */
-    if (dataList != []) {
-        console.log("Initiate TodoList")
+    if (dataList.length != 0) {
+        console.log("Initiate TodoList");
         initializeTodoItemList(dataList, todoList);
     }
 

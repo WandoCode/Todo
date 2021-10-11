@@ -4,9 +4,9 @@ export const makeBasicDatasObject = (todoItem) => {
         "title": todoItem.title,
         "description": todoItem.description,
         "notes": todoItem.notes,
-        "creationDate": JSON.stringify(todoItem.creationDate),
-        "dueDate": JSON.stringify(todoItem.dueDate),
-        "priority": JSON.stringify(todoItem.priority),
+        "creationDate": todoItem.creationDate,
+        "dueDate": todoItem.dueDate,
+        "priority": todoItem.priority,
         "project": todoItem.project
     }
     return basicDatasObject;

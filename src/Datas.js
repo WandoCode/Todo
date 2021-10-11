@@ -23,9 +23,11 @@ export const initializeTodoItemList = (dataList, todoListObject) => {
     dataList.forEach(el => {
         todoListObject.createTodoItem(el)
     });
+    
+    todoListObject.maxKey = parseInt(localStorage.getItem("maxKey"));
 };
 
-export const saveItem = (item) => {
+export const saveItem = (item, todoListObject) => {
     /* Save an item in localStorage at the key "todoItem-{basicDatas.id}" after formating it in a basicDatasObject.
     Do not save a basicDatas with basicDatas.key=undefiened.
     if the key "todoItem-{basicDatas.id}" is already taken: replace the value by the new one */
@@ -39,6 +41,8 @@ export const saveItem = (item) => {
     const basicDataObject = makeBasicDatasObject(item)
     /* Store datas */
     localStorage.setItem(`todoItem-${basicDataObject.key}`, JSON.stringify(basicDataObject));
+    console.log(todoListObject.maxKey)
+    localStorage.setItem("maxKey", `${todoListObject.maxKey}`)
 };
 
 export const removeItembyKey = (key) => {

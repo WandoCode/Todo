@@ -34,6 +34,7 @@ export class TodoList {
 
     removeAllItem() {
         /* Remove all item from the todoItemList */
+        this.maxKey = 0;
         this.todoItemList = [];
     }
 
