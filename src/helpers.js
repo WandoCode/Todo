@@ -1,3 +1,6 @@
+import { removeItemToTodoList } from './App'
+
+
 export function addNode(parentNode, nodeType, nodeClass, text, nodeId) {
     /* Append a new node of the given type to the parentNode. 
        If nodeClass and/or text, add it as classList and/or innerText 
@@ -19,7 +22,7 @@ export function addNode(parentNode, nodeType, nodeClass, text, nodeId) {
     return newElement;
 }
 
-export function addButton(parentNode, nodeClass, text, callBackFct){
+export function addButton(parentNode, nodeClass, text, callBackFct, data){
     /* Create and add a new button that call the callBackFct when clicked.*/
 
     const newButton = document.createElement("BUTTON");
@@ -32,7 +35,9 @@ export function addButton(parentNode, nodeClass, text, callBackFct){
         newButton.innerText = text;
     }
 
-    newButton.onclick = callBackFct;
+    newButton.addEventListener("click", () =>{
+        callBackFct(data);
+    });
 
     return newButton;
 }
@@ -53,4 +58,40 @@ export const createList = (listeType, parentNode, dataArray, nodeClass) => {
         const item = dataArray[i];
         addNode(newList, "LI", 'listItem', item);
     }
+
+    return newList;
 }
+
+
+export const updateProject = (currentProject, projectTitleElement, todoListArray, todoListElement, todoList) => {
+    /* Update all the datas linked to the currentProject project: 
+    load todoItem linked, update project name displayed, etc. */
+
+    /* Change project title displayed */
+    projectTitleElement.innerText = currentProject;
+
+    /* Display the note for the given project */
+    /* Make sure other item vanish */
+    todoListElement.innerHTML = "";
+    console.log(todoList)
+    /* Load item of the current project */
+    for (let i = 0; i < todoListArray.length; i++) {
+        const item = todoListArray[i];
+
+        const newItem = addNode(todoListElement, "div", "todo-item");
+        const newTitle = addNode(newItem, "div", "item-title",item.title);
+        const newCreationDate = addNode(newItem, "div", "item-creation-date", item.creationDate);
+        const newDescription = addNode(newItem, "div", "item-description", item.description);
+        const newNote = addNode(newItem, "div", "item-note", item.notes);
+        const newDueDate = addNode(newItem, "div", "item-due-date", item.dueDate);
+        const updateItem = addButton(newItem, "btn-update", "Update Note", createUpdateForm, item);
+        const removeItem = addButton()
+    }
+}
+
+
+const createUpdateForm = (todoItem) => {
+    /* TODO */
+    console.log("remove " + todoItem.title);
+}
+

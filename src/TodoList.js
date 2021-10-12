@@ -47,7 +47,7 @@ export class TodoList {
             let index = projectList.indexOf(el.project);
 
             /* If the project is not already in the list, add it */
-            if (index == -1) {
+            if (index == -1 && el.project != "") {
                 projectList.push(el.project);
             }
         };
@@ -72,7 +72,7 @@ export class TodoList {
         /* Return a list of the TodoItem with the given project. If no project, return todoItemList.*/
 
         /* Case with no given project */
-        if (project == undefined) return this.todoItemList;
+        if (project == undefined || project == "") return this.todoItemList;
 
         /* Filter with the given project */
         return this.todoItemList.filter(el => {

@@ -27,6 +27,11 @@ main{
     min-height: 98%;
     width: 100%;
 }
+
+.todo-display{
+    margin: 5% 0 0 17%;
+}
+
 footer {
     background-color: rgb(221, 220, 220);
     height: 2%;
@@ -39,5 +44,5 @@ footer {
     left: 0;
     top: 10%;
     height: 88%;
-    width: 350px;
+    width: 17%;
 }
