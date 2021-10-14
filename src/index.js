@@ -37,7 +37,6 @@ const listOfProject = createList("UL", lateralMenu, arrayOfProject, "project-lis
 listOfProject.addEventListener("click", (e) => {
     currentProject = e.target.innerText;
     todoListArray = todoList.getItemsProjectList(currentProject);
-    console.log(todoList)
     updateProject(currentProject, projectTitle, todoListArray, todoListElement, todoList);
 });
 

@@ -1,5 +1,5 @@
 import { removeItemToTodoList } from './App'
-
+import { TodoItem } from './TodoItem';
 
 export function addNode(parentNode, nodeType, nodeClass, text, nodeId) {
     /* Append a new node of the given type to the parentNode. 
@@ -35,8 +35,8 @@ export function addButton(parentNode, nodeClass, text, callBackFct, data){
         newButton.innerText = text;
     }
 
-    newButton.addEventListener("click", () =>{
-        callBackFct(data);
+    newButton.addEventListener("click", (e) =>{
+        callBackFct(e, data);
     });
 
     return newButton;
@@ -73,25 +73,33 @@ export const updateProject = (currentProject, projectTitleElement, todoListArray
     /* Display the note for the given project */
     /* Make sure other item vanish */
     todoListElement.innerHTML = "";
-    console.log(todoList)
+
     /* Load item of the current project */
     for (let i = 0; i < todoListArray.length; i++) {
         const item = todoListArray[i];
 
         const newItem = addNode(todoListElement, "div", "todo-item");
+        
         const newTitle = addNode(newItem, "div", "item-title",item.title);
         const newCreationDate = addNode(newItem, "div", "item-creation-date", item.creationDate);
         const newDescription = addNode(newItem, "div", "item-description", item.description);
         const newNote = addNode(newItem, "div", "item-note", item.notes);
         const newDueDate = addNode(newItem, "div", "item-due-date", item.dueDate);
-        const updateItem = addButton(newItem, "btn-update", "Update Note", createUpdateForm, item);
-        const removeItem = addButton()
+        const updateItem = addButton(newItem, "btn-update", "Update Note", createUpdateForm, todoList);
+        const removeItem = addButton(newItem, "btn-remove", "Remove Note", removeBtn, todoList);
+        removeItem.setAttribute("data-key", item.key);
     }
 }
 
 
-const createUpdateForm = (todoItem) => {
+const createUpdateForm = (e, todoList) => {
     /* TODO */
-    console.log("remove " + todoItem.title);
+    console.log(e)
+    console.log(todoList)
+    console.log("update");
 }
 
+const removeBtn = (e, todoList) => {
+    const key = e.target.getAttribute("data-key");
+    removeItemToTodoList(todoList, key);
+}
