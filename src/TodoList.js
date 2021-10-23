@@ -87,7 +87,8 @@ export class TodoList {
         const projectItemList = this.getItemsProjectList(project);
 
         return projectItemList.map(el => {
-            return el.title;
+            let keyEl = `${el.key}`
+            return [keyEl, el.title];
         });
     }
 

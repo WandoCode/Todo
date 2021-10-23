@@ -1,4 +1,4 @@
-import { removeItemToTodoList } from './App'
+import { removeItemToTodoList, updateTodoItem} from './App'
 import { TodoItem } from './TodoItem';
 
 export function addNode(parentNode, nodeType, nodeClass, text, nodeId) {
@@ -42,8 +42,9 @@ export function addButton(parentNode, nodeClass, text, callBackFct, data){
     return newButton;
 }
 
-export const createList = (listeType, parentNode, dataArray, nodeClass) => {
-    /* Add a list of type listeType (ul or ol) to parentNode, item coming from the given array */
+export const createList = (listeType, parentNode, dataArray, nodeClass, dataKeyValue) => {
+    /* Add a list of type listeType (ul or ol) to parentNode, item coming from the given array.
+    Use the dataKeyValue array to attribute a "data-key" attribute to each item in the list*/
 
     /* Add the list to parentNode */
     const newList = document.createElement(`${listeType}`);
@@ -56,50 +57,48 @@ export const createList = (listeType, parentNode, dataArray, nodeClass) => {
     /* Populate the list */
     for (let i = 0; i < dataArray.length; i++) {
         const item = dataArray[i];
-        addNode(newList, "LI", 'listItem', item);
+        const newLiEl = addNode(newList, "LI", 'listItem', item);
+        newLiEl.setAttribute("data-key", dataKeyValue[i]);
     }
 
     return newList;
 }
 
+export const addSelectMenu = (parentNode, dataArray, nodeClass) => {
+    /* Create a select menu with data provided in dataArray */
 
-export const updateProject = (currentProject, projectTitleElement, todoListArray, todoListElement, todoList) => {
-    /* Update all the datas linked to the currentProject project: 
-    load todoItem linked, update project name displayed, etc. */
+    const newSelect = addNode(parentNode, "select", nodeClass);
+    newSelect.name = "project-selected";
+    const blankOption = addNode(newSelect, "option", "project-option");
+    blankOption.innerText = "";
+    blankOption.value = "";
 
-    /* Change project title displayed */
-    projectTitleElement.innerText = currentProject;
-
-    /* Display the note for the given project */
-    /* Make sure other item vanish */
-    todoListElement.innerHTML = "";
-
-    /* Load item of the current project */
-    for (let i = 0; i < todoListArray.length; i++) {
-        const item = todoListArray[i];
-
-        const newItem = addNode(todoListElement, "div", "todo-item");
-        
-        const newTitle = addNode(newItem, "div", "item-title",item.title);
-        const newCreationDate = addNode(newItem, "div", "item-creation-date", item.creationDate);
-        const newDescription = addNode(newItem, "div", "item-description", item.description);
-        const newNote = addNode(newItem, "div", "item-note", item.notes);
-        const newDueDate = addNode(newItem, "div", "item-due-date", item.dueDate);
-        const updateItem = addButton(newItem, "btn-update", "Update Note", createUpdateForm, todoList);
-        const removeItem = addButton(newItem, "btn-remove", "Remove Note", removeBtn, todoList);
-        removeItem.setAttribute("data-key", item.key);
+    for (let i = 0; i < dataArray.length; i++) {
+        const el = dataArray[i];
+        const newOption = addNode(newSelect, "option", "project-option");
+        newOption.innerText = el;
+        newOption.value = el;
     }
+
+    return newSelect;
 }
 
+export const displayTitles = (parentNode, dataArray) => {
+    /* Add the list of all the titles in the given project */
 
-const createUpdateForm = (e, todoList) => {
-    /* TODO */
-    console.log(e)
-    console.log(todoList)
-    console.log("update");
-}
+    /* Clear display */
+    parentNode.innerHTML = "";
 
-const removeBtn = (e, todoList) => {
-    const key = e.target.getAttribute("data-key");
-    removeItemToTodoList(todoList, key);
+    const titleArray = [];
+    const keyArray = [];
+    for (let i = 0; i < dataArray.length; i++) {
+        const el = dataArray[i];
+        keyArray.push(el[0]);
+        titleArray.push(el[1]);
+    }
+
+    /* Add new titles */
+    const titleListElement = createList("UL", parentNode, titleArray, "title-list-project", keyArray);
+
+    return titleListElement;
 }
