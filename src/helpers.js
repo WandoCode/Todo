@@ -1,4 +1,4 @@
-import { removeItemToTodoList, updateTodoItem} from './App'
+import { removeItemToTodoList, updateTodoItem, addItemToTodoList } from './App'
 import { TodoItem } from './TodoItem';
 
 export function addNode(parentNode, nodeType, nodeClass, text, nodeId) {
@@ -35,9 +35,11 @@ export function addButton(parentNode, nodeClass, text, callBackFct, data){
         newButton.innerText = text;
     }
 
-    newButton.addEventListener("click", (e) =>{
-        callBackFct(e, data);
-    });
+    if (callBackFct != undefined){
+        newButton.addEventListener("click", (e) =>{
+            callBackFct(e, data);
+        });
+    }
 
     return newButton;
 }
@@ -236,7 +238,13 @@ const createFormElement = (parentNode, inputType, data, nodeId) => {
 
     /* Convert a string date to the correct format to display */
     if (inputType == "date") {
-        let date = new Date(data)
+        let date;
+        if (data == "") {
+            date = new Date()
+        }
+        else {
+            date = new Date(data)
+        }
         data = date.toISOString().slice(0, 10)
     }
 
@@ -258,4 +266,40 @@ const createKeyForm = (parentNode, data) => {
     parentNode.appendChild(inputForm);
 
     return inputForm;
+}
+
+export const cbAddItem = (todoList, parentNode) => {
+    /* Cb fct to add a new todo item */
+
+    /* Create an empty form to create a new note */
+    const itemFormDiv = addNode(parentNode, "div", "form-div");
+    const itemForm = addNode(itemFormDiv, "form");
+    itemForm.id = "item-form";
+
+    const itemTitle = createFormElement(itemForm, "short", "", "item-title");
+    const itemDescr = createFormElement(itemForm, "long", "", "item-descr");
+    const itemNote = createFormElement(itemForm, "textarea", "", "item-notes");
+    const itemDueDate = createFormElement(itemForm, "date", "", "item-date");
+    const itemProject = createFormElement(itemForm, "long", "", "item-project");
+    const itemPriority = createFormElement(itemForm, "number", "", "item-priority");
+
+    const saveBtn = addButton(itemForm, "rmv-btn", "Save note", cbSaveBtn, [todoList]);
+
+    return itemFormDiv;
+}
+
+const cbSaveBtn = (e, data) => {
+/* Save a new note */
+
+    /* Extract datas from the form */
+    const itemForm = document.forms[0];
+    let newTitle = itemForm.elements["item-title"].value;
+    let newDescr = itemForm.elements["item-descr"].value;
+    let newNote = itemForm.elements["item-notes"].value;
+    let newDueDate = itemForm.elements["item-date"].value;
+    let newProject = itemForm.elements["item-project"].value;
+    let newPriority = itemForm.elements["item-priority"].value;
+
+    /* Update data base */
+    addItemToTodoList(data[0], newTitle, newDescr, newNote, newDueDate, newPriority, newProject);
 }

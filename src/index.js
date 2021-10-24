@@ -1,7 +1,7 @@
 import './style.css';
 import { TodoList } from './TodoList';
 import { addItemToTodoList, removeItemToTodoList, updateTodoItem, initTodoList, clearTodoList} from './App';
-import { addNode, addButton, cbClickList, addSelectMenu, displayTitles, cbSelectProject} from './helpers'
+import { addNode, addButton, cbClickList, addSelectMenu, displayTitles, cbSelectProject, cbAddItem} from './helpers'
 
 /* Load todoList from Storage or a empty one if no datas */
 
@@ -27,6 +27,7 @@ projectTitle.innerText = currentProject;
 /* MAIN */
 const lateralMenu = addNode(main, "div", "lateral-menu");
 const todoItemElement = addNode(main, "div", "todo-display");
+const addItemBtnDiv =  addNode(main, "div", "add-btn-div");
 
 /* MENU LATERAL */
 /* Display available project */
@@ -38,12 +39,18 @@ const titleListDiv = addNode(lateralMenu, "div", "title-list-container");
 let titleList = todoList.getTitleList(""); 
 let titleListElement = displayTitles(titleListDiv, titleList);
 
+/* Add item BUTTON */
+const addItemBtn = addButton(addItemBtnDiv, "add-item-btn", "Add item");
+addItemBtn.onclick = () => {
+    todoItemElement.innerHTML = "";
+    cbAddItem(todoList, todoItemElement);
+}
+
 /* Listen for click on the titleListElement */
 titleListElement.addEventListener("click", e => {
     todoItemElement.innerHTML = "";
     cbClickList(e, todoList, todoItemElement);
 });
-
 
 /* Listen to the menu to display to choosen project. */
 selectMenuProject.addEventListener("change", (e) => {
@@ -55,6 +62,8 @@ selectMenuProject.addEventListener("change", (e) => {
         cbClickList(e, todoList, todoItemElement);
     });
 });
+
+
 
 
 
