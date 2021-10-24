@@ -1,6 +1,6 @@
 import './style.css';
 import { TodoList } from './TodoList';
-import { addItemToTodoList, removeItemToTodoList, updateTodoItem, initTodoList, clearTodoList} from './App';
+import { initTodoList} from './App';
 import { addNode, addButton, cbClickList, addSelectMenu, displayTitles, cbSelectProject, cbAddItem} from './helpers'
 
 /* Load todoList from Storage or a empty one if no datas */
@@ -12,6 +12,7 @@ let todoList = initTodoList();
 /* VARIABLES GLOBAL */
 let currentProject = "";
 let todoListArray = todoList.todoItemList;
+let projectTitleHTML;
 /* == DISPLAY == */
 
 const body = document.querySelector("body");
@@ -21,8 +22,8 @@ const main = addNode(body, "main");
 const footer = addNode(body, "footer");
 
 /* HEADER */
-const projectTitle = addNode(header, "div", "project-title");
-projectTitle.innerText = currentProject;
+projectTitleHTML = addNode(header, "div", "project-title");
+projectTitleHTML.innerText = currentProject;
 
 /* MAIN */
 const lateralMenu = addNode(main, "div", "lateral-menu");
@@ -75,6 +76,8 @@ titleListElement.addEventListener("click", e => {
 
 /* Listen to the menu to display to choosen project. */
 selectMenuProject.addEventListener("change", (e) => {
+    todoItemElement.innerHTML = "";
+
     currentProject = e.target.value;
 
     /* Display titles */

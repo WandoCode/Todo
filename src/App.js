@@ -118,7 +118,7 @@ export const addItemToTodoList = (todoList, title, description, notes, dueDate, 
     
     /* Invalid BasicDAtasObject */
     if (basicObject == -1) {
-        return;
+        return false;
     }
 
     /* Add the item to todolist */
@@ -129,6 +129,8 @@ export const addItemToTodoList = (todoList, title, description, notes, dueDate, 
 
     /* Save the item */
     saveItem(basicObject, todoList);
+
+    return true;
 }
 
 export const removeItemToTodoList = (todoList, key) => {

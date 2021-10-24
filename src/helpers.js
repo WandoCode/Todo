@@ -169,6 +169,9 @@ export const cbClickList = (e, todoList, parentNode) => {
     /* Get todo item */
     const item = todoList.getTodoItem(itemKey);
 
+    /* Update the display of the current note */
+    const projectTitleHTML = document.querySelector(".project-title");
+    projectTitleHTML.innerText = e.target.innerText;
     /* Display item details in the main screen */
     return displayTodoItem(todoList, item, parentNode);
 }
@@ -180,13 +183,12 @@ const displayTodoItem = (todoList, item, parentNode) => {
     const itemForm = addNode(itemFormDiv, "form");
     itemForm.id = "item-form";
 
-    const itemKey = createKeyForm(itemForm, item.key);
-    const itemTitle = createFormElement(itemForm, "short", item.title, "item-title");
-    const itemDescr = createFormElement(itemForm, "long", item.description, "item-descr");
-    const itemNote = createFormElement(itemForm, "textarea", item.notes, "item-notes");
-    const itemDueDate = createFormElement(itemForm, "date", item.dueDate, "item-date");
-    const itemProject = createFormElement(itemForm, "long", item.project, "item-project");
-    const itemPriority = createFormElement(itemForm, "number", item.priority, "item-priority");
+    const itemTitle = createFormElement(itemForm, "short", item.title, "field-form", "item-title");
+    const itemDescr = createFormElement(itemForm, "long", item.description, "field-form", "item-descr");
+    const itemNote = createFormElement(itemForm, "textarea", item.notes, "field-form", "item-notes");
+    const itemDueDate = createFormElement(itemForm, "date", item.dueDate, "field-form", "item-date");
+    const itemProject = createFormElement(itemForm, "long", item.project, "field-form", "item-project");
+    const itemPriority = createFormElement(itemForm, "number", item.priority, "field-form", "item-priority");
 
     const removeBtn = addButton(itemForm, "rmv-btn", "Delete note", cbRemoveBtn, [todoList, item.key]);
     const updateBtn = addButton(itemForm, "update-btn", "Update note", cbUpdateBtn, [todoList, item.key]);
@@ -231,7 +233,7 @@ const cbRemoveBtn = (e, data) => {
     selectedTitle.remove();
 }
 
-const createFormElement = (parentNode, inputType, data, nodeId) => {
+const createFormElement = (parentNode, inputType, data, nodeClass, nodeId) => {
 /* Create an inupt field of the given type and add it to the given node */
     let inputForm;
     if (inputType == "short") {
@@ -278,24 +280,14 @@ const createFormElement = (parentNode, inputType, data, nodeId) => {
     }
 
     inputForm.value = data;
-    inputForm.id = nodeId
+    inputForm.id = nodeId;
+    inputForm.className = nodeClass;
 
     parentNode.appendChild(inputForm);
 
     return inputForm;
 }
 
-const createKeyForm = (parentNode, data) => {
-    /* Create an invisible field to contains the item's key */
-    const inputForm = document.createElement("input");
-    inputForm.value = data;
-    inputForm.style.display = "none";
-    inputForm.id = "item-key"
-
-    parentNode.appendChild(inputForm);
-
-    return inputForm;
-}
 
 export const cbAddItem = (todoList, parentNode) => {
     /* Cb fct to add a new todo item */
@@ -305,12 +297,17 @@ export const cbAddItem = (todoList, parentNode) => {
     const itemForm = addNode(itemFormDiv, "form");
     itemForm.id = "item-form";
 
-    const itemTitle = createFormElement(itemForm, "short", "", "item-title");
-    const itemDescr = createFormElement(itemForm, "long", "", "item-descr");
-    const itemNote = createFormElement(itemForm, "textarea", "", "item-notes");
-    const itemDueDate = createFormElement(itemForm, "date", "", "item-date");
-    const itemProject = createFormElement(itemForm, "long", "", "item-project");
-    const itemPriority = createFormElement(itemForm, "number", "", "item-priority");
+    const itemTitle = createFormElement(itemForm, "short", "", "field-form", "item-title");
+    itemTitle.setAttribute("placeholder", "Title");
+    const itemDescr = createFormElement(itemForm, "long", "", "field-form", "item-descr");
+    itemDescr.setAttribute("placeholder", "Short description");
+    const itemNote = createFormElement(itemForm, "textarea", "", "field-form", "item-notes");
+    itemNote.setAttribute("placeholder", "All the details comes here!");
+    const itemDueDate = createFormElement(itemForm, "date", "", "field-form", "item-date");
+    const itemProject = createFormElement(itemForm, "long", "", "field-form", "item-project");
+    itemProject.setAttribute("placeholder", "Project");
+    const itemPriority = createFormElement(itemForm, "number", "", "field-form", "item-priority");
+    itemPriority.setAttribute("placeholder", "Priority");
 
     const saveBtn = addButton(itemForm, "rmv-btn", "Save note", cbSaveBtn, [todoList]);
 
@@ -330,5 +327,7 @@ const cbSaveBtn = (e, data) => {
     let newPriority = itemForm.elements["item-priority"].value;
 
     /* Update data base */
-    addItemToTodoList(data[0], newTitle, newDescr, newNote, newDueDate, newPriority, newProject);
+    if (addItemToTodoList(data[0], newTitle, newDescr, newNote, newDueDate, newPriority, newProject)) {
+        window.location.reload();
+    };
 }
