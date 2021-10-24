@@ -92,21 +92,4 @@ export class TodoList {
         });
     }
 
-    sortByPriority() {
-        /* Sort the todoItem by priority order */
-
-        return this.todoItemList.sort((a, b) => {
-            return (a.priority - b.priority);
-        });
-    }
-
-    sortByDate() {
-        /* Sort the todoItem by date of creation */
-
-        return this.todoItemList.sort((a, b) => {
-            return (a.creationDate - b.creationDate);
-        });
-    }
-
-
 }

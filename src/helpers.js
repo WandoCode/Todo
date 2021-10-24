@@ -85,18 +85,23 @@ export const addSelectMenu = (parentNode, dataArray, nodeClass) => {
     return newSelect;
 }
 
-export const displayTitles = (parentNode, dataArray) => {
+export const displayTitles = (parentNode, todoList, project, sortbyChoice) => {
     /* Add the list of all the titles in the given project */
 
     /* Clear display */
     parentNode.innerHTML = "";
 
+    /* Get the item for the given project sorted by the given parameter */
+    let dataArray = todoList.getItemsProjectList(project);
+    let sortedData = sortByData(dataArray, sortbyChoice);
+    console.table(sortedData);
+    /* Get an array of the title and key */
     const titleArray = [];
     const keyArray = [];
-    for (let i = 0; i < dataArray.length; i++) {
-        const el = dataArray[i];
-        keyArray.push(el[0]);
-        titleArray.push(el[1]);
+    for (let i = 0; i < sortedData.length; i++) {
+        const el = sortedData[i];
+        keyArray.push(el.key);
+        titleArray.push(el.title);
     }
 
     /* Add new titles */
@@ -105,14 +110,40 @@ export const displayTitles = (parentNode, dataArray) => {
     return titleListElement;
 }
 
-export const cbSelectProject = (e, todoList, titleListDiv) => {
+const sortByData = (dataArray, sorting) => {
+
+    let sortKey;
+    if (sorting == "Creation date") {
+        sortKey = "creationDate";
+    }
+    else if (sorting == "Due date"){
+        sortKey = "dueDate";
+    }
+    else if (sorting == "Title"){
+        sortKey = "title";
+    }
+    else if (sorting == "Priority"){
+        sortKey = "priority";
+    }
+    else {
+        sortKey = "key";
+    }
+
+    let sortedArray = dataArray.sort((a, b) => {
+        return (a[sortKey] > b[sortKey]) ? 1 : -1;
+    });
+
+    return sortedArray;
+}
+
+
+export const cbSelectProject = (e, todoList, titleListDiv, sortbyChoice) => {
 
     /* Get current project's name */
     let currentProject = e.target.value;
 
     /* Display title of item in the current project */
-    let titleList = todoList.getTitleList(currentProject); 
-    return displayTitles(titleListDiv, titleList, "title-list");
+    return displayTitles(titleListDiv, todoList, currentProject, sortbyChoice);
 }
 
 const tagAsSelected = (target) => {
@@ -129,7 +160,6 @@ const tagAsSelected = (target) => {
     /* Add a selected tag to to choosen title */
     target.id = "selected-title";
 }
-
 
 export const cbClickList = (e, todoList, parentNode) => {
     /* Cb fct when a title is clicked */

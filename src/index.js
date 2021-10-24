@@ -31,13 +31,20 @@ const addItemBtnDiv =  addNode(main, "div", "add-btn-div");
 
 /* MENU LATERAL */
 /* Display available project */
+const selectMenusDiv = addNode(lateralMenu, "DIV", "select-div");
 let arrayOfProject = todoList.getProjectsList();
-const selectMenuProject = addSelectMenu(lateralMenu, arrayOfProject, "project-select");
+const selectMenuProject = addSelectMenu(selectMenusDiv, arrayOfProject, "project-select");
 const titleListDiv = addNode(lateralMenu, "div", "title-list-container");
 
+/* Sort by selection */
+const sortbySelector = addSelectMenu(selectMenusDiv, ["Creation date", "Due date", "Title", "Priority"], "sortby-selector");
+let sortbyChoice;
+sortbySelector.addEventListener("change", e => {
+    sortbyChoice = e.target.value;
+});
+
 /* Initialize display of title: show all title */
-let titleList = todoList.getTitleList(""); 
-let titleListElement = displayTitles(titleListDiv, titleList);
+let titleListElement = displayTitles(titleListDiv, todoList, "", sortbyChoice);
 
 /* Add item BUTTON */
 const addItemBtn = addButton(addItemBtnDiv, "add-item-btn", "Add item");
@@ -55,7 +62,7 @@ titleListElement.addEventListener("click", e => {
 /* Listen to the menu to display to choosen project. */
 selectMenuProject.addEventListener("change", (e) => {
 
-    titleListElement = cbSelectProject(e, todoList, titleListDiv);
+    titleListElement = cbSelectProject(e, todoList, titleListDiv, sortbyChoice);
 
     titleListElement.addEventListener("click", e => {
         todoItemElement.innerHTML = "";
