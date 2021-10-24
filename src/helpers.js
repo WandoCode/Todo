@@ -137,11 +137,7 @@ const sortByData = (dataArray, sorting) => {
 }
 
 
-export const cbSelectProject = (e, todoList, titleListDiv, sortbyChoice) => {
-
-    /* Get current project's name */
-    let currentProject = e.target.value;
-
+export const cbSelectProject = (currentProject, todoList, titleListDiv, sortbyChoice) => {
     /* Display title of item in the current project */
     return displayTitles(titleListDiv, todoList, currentProject, sortbyChoice);
 }

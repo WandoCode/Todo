@@ -38,10 +38,9 @@ const titleListDiv = addNode(lateralMenu, "div", "title-list-container");
 
 /* Sort by selection */
 const sortbySelector = addSelectMenu(selectMenusDiv, ["Creation date", "Due date", "Title", "Priority"], "sortby-selector");
-let sortbyChoice;
-sortbySelector.addEventListener("change", e => {
-    sortbyChoice = e.target.value;
-});
+
+/* Default sorting is used */
+let sortbyChoice = "";
 
 /* Initialize display of title: show all title */
 let titleListElement = displayTitles(titleListDiv, todoList, "", sortbyChoice);
@@ -53,6 +52,21 @@ addItemBtn.onclick = () => {
     cbAddItem(todoList, todoItemElement);
 }
 
+/* Listen to sort by the value in the sort by menu */
+sortbySelector.addEventListener("change", e => {
+    sortbyChoice = e.target.value;
+
+    let currentProject = document.querySelector(".project-select").value;
+
+    /* Display title */
+    titleListElement = cbSelectProject(currentProject, todoList, titleListDiv, sortbyChoice);
+
+    titleListElement.addEventListener("click", e => {
+        todoItemElement.innerHTML = "";
+        cbClickList(e, todoList, todoItemElement);
+    });
+});
+
 /* Listen for click on the titleListElement */
 titleListElement.addEventListener("click", e => {
     todoItemElement.innerHTML = "";
@@ -61,8 +75,10 @@ titleListElement.addEventListener("click", e => {
 
 /* Listen to the menu to display to choosen project. */
 selectMenuProject.addEventListener("change", (e) => {
+    let currentProject = e.target.value;
 
-    titleListElement = cbSelectProject(e, todoList, titleListDiv, sortbyChoice);
+    /* Display titles */
+    titleListElement = cbSelectProject(currentProject, todoList, titleListDiv, sortbyChoice);
 
     titleListElement.addEventListener("click", e => {
         todoItemElement.innerHTML = "";
