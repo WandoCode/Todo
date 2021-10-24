@@ -94,7 +94,7 @@ export const displayTitles = (parentNode, todoList, project, sortbyChoice) => {
     /* Get the item for the given project sorted by the given parameter */
     let dataArray = todoList.getItemsProjectList(project);
     let sortedData = sortByData(dataArray, sortbyChoice);
-    console.table(sortedData);
+
     /* Get an array of the title and key */
     const titleArray = [];
     const keyArray = [];
@@ -237,6 +237,8 @@ const createFormElement = (parentNode, inputType, data, nodeId) => {
     if (inputType == "short") {
         inputForm = document.createElement("input");
         inputForm.setAttribute("max", "20");
+        inputForm.setAttribute("min", "1");
+        inputForm.required = true;
     }
     else if (inputType == "long") {
         inputForm = document.createElement("input");
@@ -253,6 +255,7 @@ const createFormElement = (parentNode, inputType, data, nodeId) => {
     else if (inputType == "number") {
         inputForm= document.createElement("input");
         inputForm.setAttribute("type", "number");
+        inputForm.setAttribute("min", "1");
     }
     else if (inputType == "date") {
         inputForm= document.createElement("input");
@@ -316,7 +319,7 @@ export const cbAddItem = (todoList, parentNode) => {
 
 const cbSaveBtn = (e, data) => {
 /* Save a new note */
-
+    e.preventDefault()
     /* Extract datas from the form */
     const itemForm = document.forms[0];
     let newTitle = itemForm.elements["item-title"].value;

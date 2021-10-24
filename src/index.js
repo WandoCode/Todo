@@ -56,7 +56,7 @@ addItemBtn.onclick = () => {
 sortbySelector.addEventListener("change", e => {
     sortbyChoice = e.target.value;
 
-    let currentProject = document.querySelector(".project-select").value;
+    currentProject = document.querySelector(".project-select").value;
 
     /* Display title */
     titleListElement = cbSelectProject(currentProject, todoList, titleListDiv, sortbyChoice);
@@ -75,7 +75,7 @@ titleListElement.addEventListener("click", e => {
 
 /* Listen to the menu to display to choosen project. */
 selectMenuProject.addEventListener("change", (e) => {
-    let currentProject = e.target.value;
+    currentProject = e.target.value;
 
     /* Display titles */
     titleListElement = cbSelectProject(currentProject, todoList, titleListDiv, sortbyChoice);
