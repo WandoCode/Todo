@@ -113,8 +113,27 @@ export const cbSelectProject = (e, todoList, titleListDiv) => {
     return displayTitles(titleListDiv, titleList, "title-list");
 }
 
+const tagAsSelected = (target) => {
+/* Tag an element as selected */
+
+/* Erase previous selected tag */
+    let titleItemList = document.querySelectorAll(".listItem");
+
+    for (let i = 0; i < titleItemList.length; i++) {
+        const element = titleItemList[i];
+        element.removeAttribute("id");
+    }
+
+    /* Add a selected tag to to choosen title */
+    target.id = "selected-title";
+}
+
+
 export const cbClickList = (e, todoList, parentNode) => {
     /* Cb fct when a title is clicked */
+
+    /* tag the title as selected */
+    tagAsSelected(e.target);
 
     /* Get item key */
     const itemKey = e.target.getAttribute("data-key");
@@ -131,6 +150,7 @@ const displayTodoItem = (todoList, item, parentNode) => {
 
     const itemFormDiv = addNode(parentNode, "div", "form-div");
     const itemForm = addNode(itemFormDiv, "form");
+    itemForm.id = "item-form";
 
     const itemKey = createKeyForm(itemForm, item.key);
     const itemTitle = createFormElement(itemForm, "short", item.title, "item-title");
@@ -141,13 +161,46 @@ const displayTodoItem = (todoList, item, parentNode) => {
     const itemPriority = createFormElement(itemForm, "number", item.priority, "item-priority");
 
     const removeBtn = addButton(itemForm, "rmv-btn", "Delete note", cbRemoveBtn, [todoList, item.key]);
+    const updateBtn = addButton(itemForm, "update-btn", "Update note", cbUpdateBtn, [todoList, item.key]);
 
     return itemFormDiv;
 }
 
+const cbUpdateBtn = (e, data) => {
+    /* Update the item with key  = data[1] */
+    e.preventDefault();
+
+    /* Extract datas from the form */
+    const itemForm = document.forms[0];
+    let newTitle = itemForm.elements["item-title"].value;
+    let newDescr = itemForm.elements["item-descr"].value;
+    let newNote = itemForm.elements["item-notes"].value;
+    let newDueDate = itemForm.elements["item-date"].value;
+    let newProject = itemForm.elements["item-project"].value;
+    let newPriority = itemForm.elements["item-priority"].value;
+
+    /* Update data base */
+    updateTodoItem(data[0], data[1], newTitle, newDescr, newNote, newDueDate, newPriority, newProject);
+
+    /* Upadte title list display */
+    let selectedTitle = document.querySelector("#selected-title");
+    selectedTitle.innerText = newTitle;
+}
+
+
 const cbRemoveBtn = (e, data) => {
 /* Remove the item with key  = data[1] from storage */
+    e.preventDefault();
+
+    /* Remove from db*/
     removeItemToTodoList(data[0], data[1]);
+
+    /* Upate display */
+    let formDiv = document.querySelector(".form-div");
+    formDiv.remove();
+
+    let selectedTitle = document.querySelector("#selected-title");
+    selectedTitle.remove();
 }
 
 const createFormElement = (parentNode, inputType, data, nodeId) => {
@@ -173,9 +226,20 @@ const createFormElement = (parentNode, inputType, data, nodeId) => {
         inputForm= document.createElement("input");
         inputForm.setAttribute("type", "number");
     }
+    else if (inputType == "date") {
+        inputForm= document.createElement("input");
+        inputForm.setAttribute("type", "date");
+    }
     else{
         return;
     }
+
+    /* Convert a string date to the correct format to display */
+    if (inputType == "date") {
+        let date = new Date(data)
+        data = date.toISOString().slice(0, 10)
+    }
+
     inputForm.value = data;
     inputForm.id = nodeId
 

@@ -41,7 +41,6 @@ export const saveItem = (item, todoListObject) => {
     const basicDataObject = makeBasicDatasObject(item)
     /* Store datas */
     localStorage.setItem(`todoItem-${basicDataObject.key}`, JSON.stringify(basicDataObject));
-    console.log(todoListObject.maxKey)
     localStorage.setItem("maxKey", `${todoListObject.maxKey}`)
 };
 
