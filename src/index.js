@@ -36,17 +36,26 @@ const titleListDiv = addNode(lateralMenu, "div", "title-list-container");
 
 /* Initialize display of title: show all title */
 let titleList = todoList.getTitleList(""); 
-const titleListElement = displayTitles(titleListDiv, titleList);
-
-/* Listen to the menu to display to choosen project. */
-selectMenuProject.addEventListener("change", (e) => {
-    cbSelectProject(e, todoList, titleListElement, titleListDiv);
-});
+let titleListElement = displayTitles(titleListDiv, titleList);
 
 /* Listen for click on the titleListElement */
 titleListElement.addEventListener("click", e => {
     todoItemElement.innerHTML = "";
     cbClickList(e, todoList, todoItemElement);
 });
+
+
+/* Listen to the menu to display to choosen project. */
+selectMenuProject.addEventListener("change", (e) => {
+
+    titleListElement = cbSelectProject(e, todoList, titleListDiv);
+
+    titleListElement.addEventListener("click", e => {
+        todoItemElement.innerHTML = "";
+        cbClickList(e, todoList, todoItemElement);
+    });
+});
+
+
 
 

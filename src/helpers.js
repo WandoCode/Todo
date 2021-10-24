@@ -103,14 +103,14 @@ export const displayTitles = (parentNode, dataArray) => {
     return titleListElement;
 }
 
-export const cbSelectProject = (e, todoList, titleListElement, titleListDiv) => {
+export const cbSelectProject = (e, todoList, titleListDiv) => {
 
     /* Get current project's name */
     let currentProject = e.target.value;
 
     /* Display title of item in the current project */
     let titleList = todoList.getTitleList(currentProject); 
-    titleListElement = displayTitles(titleListDiv, titleList, "title-list");
+    return displayTitles(titleListDiv, titleList, "title-list");
 }
 
 export const cbClickList = (e, todoList, parentNode) => {
@@ -123,10 +123,10 @@ export const cbClickList = (e, todoList, parentNode) => {
     const item = todoList.getTodoItem(itemKey);
 
     /* Display item details in the main screen */
-    return displayTodoItem(item, parentNode);
+    return displayTodoItem(todoList, item, parentNode);
 }
 
-const displayTodoItem = (item, parentNode) => {
+const displayTodoItem = (todoList, item, parentNode) => {
     /* Display item details in the main screen */ 
 
     const itemFormDiv = addNode(parentNode, "div", "form-div");
@@ -140,7 +140,14 @@ const displayTodoItem = (item, parentNode) => {
     const itemProject = createFormElement(itemForm, "long", item.project, "item-project");
     const itemPriority = createFormElement(itemForm, "number", item.priority, "item-priority");
 
+    const removeBtn = addButton(itemForm, "rmv-btn", "Delete note", cbRemoveBtn, [todoList, item.key]);
+
     return itemFormDiv;
+}
+
+const cbRemoveBtn = (e, data) => {
+/* Remove the item with key  = data[1] from storage */
+    removeItemToTodoList(data[0], data[1]);
 }
 
 const createFormElement = (parentNode, inputType, data, nodeId) => {
