@@ -66,7 +66,7 @@ export const createList = (listeType, parentNode, dataArray, nodeClass, dataKeyV
     return newList;
 }
 
-export const addSelectMenu = (parentNode, dataArray, nodeClass) => {
+export const addSelectMenu = (parentNode, dataArray, nodeClass, placeholderText) => {
     /* Create a select menu with data provided in dataArray */
 
     const newSelect = addNode(parentNode, "select", nodeClass);
@@ -74,6 +74,12 @@ export const addSelectMenu = (parentNode, dataArray, nodeClass) => {
     const blankOption = addNode(newSelect, "option", "project-option");
     blankOption.innerText = "";
     blankOption.value = "";
+
+    const placeholderEl = addNode(newSelect, "option", "placeholder-select");
+    placeholderEl.innerText = placeholderText;
+    placeholderEl.hidden = true;
+    placeholderEl.disabled = true;
+    placeholderEl.selected = true;
 
     for (let i = 0; i < dataArray.length; i++) {
         const el = dataArray[i];
@@ -182,16 +188,21 @@ const displayTodoItem = (todoList, item, parentNode) => {
     const itemFormDiv = addNode(parentNode, "div", "form-div");
     const itemForm = addNode(itemFormDiv, "form");
     itemForm.id = "item-form";
+    itemForm.setAttribute("autocomplete", "off");
 
-    const itemTitle = createFormElement(itemForm, "short", item.title, "field-form", "item-title");
-    const itemDescr = createFormElement(itemForm, "long", item.description, "field-form", "item-descr");
-    const itemNote = createFormElement(itemForm, "textarea", item.notes, "field-form", "item-notes");
-    const itemDueDate = createFormElement(itemForm, "date", item.dueDate, "field-form", "item-date");
-    const itemProject = createFormElement(itemForm, "long", item.project, "field-form", "item-project");
-    const itemPriority = createFormElement(itemForm, "number", item.priority, "field-form", "item-priority");
+    const inputDiv = addNode(itemForm, 'DIV', 'input-div');
+    const itemTitle = createFormElement(inputDiv, "short", item.title, "field-form", "item-title");
+    const itemDescr = createFormElement(inputDiv, "long", item.description, "field-form", "item-descr");
 
-    const removeBtn = addButton(itemForm, "rmv-btn", "Delete note", cbRemoveBtn, [todoList, item.key]);
-    const updateBtn = addButton(itemForm, "update-btn", "Update note", cbUpdateBtn, [todoList, item.key]);
+    const optionDiv = addNode(inputDiv, "div", "option-div");
+    const itemDueDate = createFormElement(optionDiv, "date", item.dueDate, "field-form", "item-date");
+    const itemProject = createFormElement(optionDiv, "long", item.project, "field-form", "item-project");
+    const itemPriority = createFormElement(optionDiv, "number", item.priority, "field-form", "item-priority");
+    const itemNote = createFormElement(inputDiv, "textarea", item.notes, "field-form", "item-notes");
+
+    const btnDiv = addNode(itemForm, "DIV", "btn-div");
+    const updateBtn = addButton(btnDiv, "update-btn", "Update note", cbUpdateBtn, [todoList, item.key]);
+    const removeBtn = addButton(btnDiv, "rmv-btn", "Delete note", cbRemoveBtn, [todoList, item.key]);
 
     return itemFormDiv;
 }
@@ -250,10 +261,6 @@ const createFormElement = (parentNode, inputType, data, nodeClass, nodeId) => {
         inputForm = document.createElement("TEXTAREA");
         inputForm.setAttribute("maxLength", "300");
     }
-    else if (inputType == "textarea") {
-        inputForm= document.createElement("input");
-        inputForm.setAttribute("type", "date");
-    }
     else if (inputType == "number") {
         inputForm= document.createElement("input");
         inputForm.setAttribute("type", "number");
@@ -296,20 +303,26 @@ export const cbAddItem = (todoList, parentNode) => {
     const itemFormDiv = addNode(parentNode, "div", "form-div");
     const itemForm = addNode(itemFormDiv, "form");
     itemForm.id = "item-form";
+    itemForm.setAttribute("autocomplete", "off");
 
-    const itemTitle = createFormElement(itemForm, "short", "", "field-form", "item-title");
+    const inputDiv = addNode(itemForm, 'DIV', 'input-div');
+    const itemTitle = createFormElement(inputDiv, "short", "", "field-form", "item-title");
     itemTitle.setAttribute("placeholder", "Title");
-    const itemDescr = createFormElement(itemForm, "long", "", "field-form", "item-descr");
+    const itemDescr = createFormElement(inputDiv, "long", "", "field-form", "item-descr");
     itemDescr.setAttribute("placeholder", "Short description");
-    const itemNote = createFormElement(itemForm, "textarea", "", "field-form", "item-notes");
-    itemNote.setAttribute("placeholder", "All the details comes here!");
-    const itemDueDate = createFormElement(itemForm, "date", "", "field-form", "item-date");
-    const itemProject = createFormElement(itemForm, "long", "", "field-form", "item-project");
+
+    const optionDiv = addNode(inputDiv, "div", "option-div");
+    const itemDueDate = createFormElement(optionDiv, "date", "", "field-form", "item-date");
+    const itemProject = createFormElement(optionDiv, "long", "", "field-form", "item-project");
     itemProject.setAttribute("placeholder", "Project");
-    const itemPriority = createFormElement(itemForm, "number", "", "field-form", "item-priority");
+    const itemPriority = createFormElement(optionDiv, "number", "", "field-form", "item-priority");
     itemPriority.setAttribute("placeholder", "Priority");
 
-    const saveBtn = addButton(itemForm, "rmv-btn", "Save note", cbSaveBtn, [todoList]);
+    const itemNote = createFormElement(inputDiv, "textarea", "", "field-form", "item-notes");
+    itemNote.setAttribute("placeholder", "All the details comes here!");
+
+    const btnDiv = addNode(itemForm, "DIV", "btn-div");
+    const saveBtn = addButton(btnDiv, "rmv-btn", "Save note", cbSaveBtn, [todoList]);
 
     return itemFormDiv;
 }

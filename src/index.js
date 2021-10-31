@@ -19,7 +19,6 @@ const body = document.querySelector("body");
 
 const header = addNode(body, "header");
 const main = addNode(body, "main");
-const footer = addNode(body, "footer");
 
 /* HEADER */
 projectTitleHTML = addNode(header, "div", "project-title");
@@ -34,11 +33,11 @@ const addItemBtnDiv =  addNode(main, "div", "add-btn-div");
 /* Display available project */
 const selectMenusDiv = addNode(lateralMenu, "DIV", "select-div");
 let arrayOfProject = todoList.getProjectsList();
-const selectMenuProject = addSelectMenu(selectMenusDiv, arrayOfProject, "project-select");
+const selectMenuProject = addSelectMenu(selectMenusDiv, arrayOfProject, "project-select", "Filter by:");
 const titleListDiv = addNode(lateralMenu, "div", "title-list-container");
 
 /* Sort by selection */
-const sortbySelector = addSelectMenu(selectMenusDiv, ["Creation date", "Due date", "Title", "Priority"], "sortby-selector");
+const sortbySelector = addSelectMenu(selectMenusDiv, ["Creation date", "Due date", "Title", "Priority"], "sortby-selector", "Sort by:");
 
 /* Default sorting is used */
 let sortbyChoice = "";
@@ -47,7 +46,7 @@ let sortbyChoice = "";
 let titleListElement = displayTitles(titleListDiv, todoList, "", sortbyChoice);
 
 /* Add item BUTTON */
-const addItemBtn = addButton(addItemBtnDiv, "add-item-btn", "Add item");
+const addItemBtn = addButton(addItemBtnDiv, "add-item-btn", "➕");
 addItemBtn.onclick = () => {
     todoItemElement.innerHTML = "";
     cbAddItem(todoList, todoItemElement);
